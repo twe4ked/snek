@@ -4,26 +4,31 @@ require 'io/console'
 require 'frame'
 
 class Snek < Array
+  attr_accessor :length
+
   def initialize(*args)
     @length = 4
     super
   end
 
   def <<(*args)
-    shift if count > @length
+    shift if count > length
 
     super
   end
 end
 
 class Game
+  DIRECTIONS = %w[n s e w]
+
   def initialize
-    @direction = 'e'
+    @direction = random_direction
+    @food = random_position
   end
 
   def start
     Frame.setup
-    @snek = Snek.new([[10,10]])
+    @snek = Snek.new([random_position])
 
     loop do
       render
@@ -35,18 +40,47 @@ class Game
 
   attr_reader :frame
 
+  def rows
+    $stdin.winsize[0]
+    25
+  end
+
+  def columns
+    $stdin.winsize[1]
+    80
+  end
+
   def render
-    rows, columns = $stdin.winsize
-    @frame = Frame.new columns, 25
+    @frame = Frame.new columns, rows
 
     move_snake
 
     draw_border
     draw_snake
+    draw_food
+
+    if @snek.include?(@food)
+      @snek.length += 1
+      @food = random_position
+    end
 
     input
 
     frame.render
+  end
+
+  def random_position
+    # TODO: non-conflicting
+    # TODO: not a border
+
+    x = (0..columns).to_a.sample
+    y = (0..rows).to_a.sample
+
+    [x,y]
+  end
+
+  def random_direction
+    DIRECTIONS.sample
   end
 
   def draw_border
@@ -62,6 +96,10 @@ class Game
     @snek.each do |segment|
       frame.draw *segment, '*'
     end
+  end
+
+  def draw_food
+    frame.draw *@food, '$'
   end
 
   def move_snake

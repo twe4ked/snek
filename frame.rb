@@ -12,39 +12,11 @@ class Frame
   def draw(x, y, sprite)
     lines = sprite.split("\n")
 
-    # overlap left
-    if x < 0
-      lines.map! do |line|
-        if line.size >= -x
-          line[-x..-1]
-        else
-          ' ' * line.size
-        end
-      end
-      x = 0
-    end
-
-    # overlap right
-    lines.map! do |line|
-      line[0..self.width-x-1]
-    end
-
     lines.each_with_index do |line, i|
       if line.size > 0 && x+line.size <= self.width
         @rows[y+i][x..x+line.size-1] = line
       end
     end
-  end
-
-  def draw_center(y, sprite)
-    sprite_width = sprite.split("\n").first.size
-    x = self.width / 2 - sprite_width / 2
-    draw x, y, sprite
-  end
-
-  def draw_right(x, y, sprite)
-    sprite_width = sprite.split("\n").first.size
-    draw x-sprite_width+1, y, sprite
   end
 
   def render

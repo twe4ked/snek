@@ -59,10 +59,9 @@ class Game
 
   def random_position
     # TODO: non-conflicting
-    # TODO: not a border
 
-    x = (0..columns).to_a.sample
-    y = (0..rows).to_a.sample
+    x = (1..columns-2).to_a.sample
+    y = (1..rows-2).to_a.sample
 
     [x,y]
   end

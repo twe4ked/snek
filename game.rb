@@ -115,13 +115,13 @@ class Game
         when 'q'.ord, 27, 3 # escape, ctrl-c
           exit
         when 119 # W up
-          @direction = 'n'
+          @direction = 'n' if @direction != 's'
         when 115 # S down
-          @direction = 's'
+          @direction = 's' if @direction != 'n'
         when 100 # D right
-          @direction = 'e'
+          @direction = 'e' if @direction != 'w'
         when 97  # A left
-          @direction = 'w'
+          @direction = 'w' if @direction != 'e'
         end
       end
     rescue Errno::EAGAIN

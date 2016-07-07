@@ -1,6 +1,4 @@
 class Frame
-  attr_reader :rows
-
   def initialize(width, height)
     @rows = height.times.map { ' ' * width }
   end
@@ -58,4 +56,8 @@ class Frame
       clear_screen
     end
   end
+
+  private
+
+  attr_reader :rows
 end

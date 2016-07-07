@@ -15,10 +15,12 @@ class Game
   def start
     Frame.setup
     @snek = Snek.new([random_position])
+    @tick = 0
 
     loop do
       render
       sleep 0.1
+      @tick += 1
     end
   end
 
@@ -39,7 +41,7 @@ class Game
   def render
     @frame = Frame.new columns, rows
 
-    move_snake
+    move_snake if (@tick % 2 == 0 || %w[e w].include?(@direction))
 
     draw_border
     draw_snake

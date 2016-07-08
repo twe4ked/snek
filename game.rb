@@ -71,12 +71,12 @@ class Game
   end
 
   def draw_border
-    frame.draw 0, 0, "+#{'-' * 78}+"
-    (1..23).each do |y|
+    frame.draw 0, 0, "+#{'-' * (columns-2)}+"
+    (1..rows-2).each do |y|
       frame.draw 0, y, '|'
-      frame.draw 79, y, '|'
+      frame.draw columns-1, y, '|'
     end
-    frame.draw 0, 24, "+#{'-' * 78}+"
+    frame.draw 0, rows-1, "+#{'-' * (columns-2)}+"
   end
 
   def draw_snake

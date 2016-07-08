@@ -19,4 +19,17 @@ class FrameTest < Minitest::Test
     frame.draw 5, 0, 'f'
     assert_equal ['     '], frame.rows
   end
+
+  def test_positions
+    frame = Frame.new 5, 2
+    frame.draw 0, 0, 'foo'
+    frame.draw 2, 1, 'b'
+
+    assert_equal([
+      [0, 0], [1, 0], [2, 0],
+      [2, 1]
+    ],
+      frame.positions
+    )
+  end
 end

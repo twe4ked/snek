@@ -92,16 +92,25 @@ class Game
   def move_snake
     x, y = @snek.last
 
-    case @direction
+    new_position = case @direction
     when 'n'
-      @snek << [x, y - 1]
+      [x, y - 1]
     when 's'
-      @snek << [x, y + 1]
+      [x, y + 1]
     when 'e'
-      @snek << [x + 1, y]
+      [x + 1, y]
     when 'w'
-      @snek << [x - 1, y]
+      [x - 1, y]
     end
+
+    if @snek.include?(new_position)
+      puts
+      puts 'you crashed into yourself'
+      exit
+    end
+
+    @snek << new_position
+    new_position
   end
 
   def input

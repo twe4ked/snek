@@ -41,11 +41,17 @@ class Game
   def render
     @frame = Frame.new columns, rows
 
-    move_snake if (@tick % 2 == 0 || %w[e w].include?(@direction))
+    new_position = move_snake if (@tick % 2 == 0 || %w[e w].include?(@direction))
 
-    draw_border
+    border = draw_border
     draw_snake
     draw_food
+
+    if border.include?(new_position)
+      puts
+      puts 'you crashed into a wall'
+      exit
+    end
 
     if @snek.include?(@food)
       @snek.length += 1
@@ -77,6 +83,14 @@ class Game
       frame.draw columns-1, y, '|'
     end
     frame.draw 0, rows-1, "+#{'-' * (columns-2)}+"
+
+    border = []
+    border << (0..columns-1).to_a.map { |x| [x, 0] }
+    (0..rows-1).each do |y|
+      border << [0, y]
+    end
+    border << (rows-1..columns-1).to_a.map { |x| [x, 0] }
+    border
   end
 
   def draw_snake

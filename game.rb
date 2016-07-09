@@ -26,7 +26,9 @@ class Game
       @tick += 1
       network.receive_updates do |data|
         key = data[:hostname]
-        @other_sneks[key] = unpack_snek(data[:snek])
+        unless key == network.hostname
+          @other_sneks[key] = unpack_snek(data[:snek])
+        end
       end
       network.send_update snek: pack_snek(@snek)
     end
@@ -61,7 +63,7 @@ class Game
       new_position = move_snek
 
       border = draw_border
-      draw_snek
+      draw_sneks
       draw_food
 
       if border.include?(new_position)
@@ -130,9 +132,18 @@ class Game
     border.flatten(1)
   end
 
-  def draw_snek
-    @snek.each_with_index do |segment, index|
-      frame.draw *segment, index == @snek.count-1 ? '@' : '*'
+  def draw_sneks
+    draw_snek @snek
+
+    @other_sneks.values.each do |snek|
+      draw_snek snek
+    end
+  end
+
+  def draw_snek(snek)
+    snek.each_with_index do |segment, index|
+      char = index == snek.count-1 ? '@' : '*'
+      frame.draw *segment, char
     end
   end
 

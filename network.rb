@@ -35,8 +35,6 @@ class Network
     end
   end
 
-  private
-
   def hostname
     @hostname ||= `hostname -s`.strip
   end

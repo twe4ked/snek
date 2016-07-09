@@ -107,12 +107,11 @@ class Game
     frame.draw 0, rows-1, "+#{'-' * (columns-2)}+"
 
     border = []
-    border << (0..columns-1).to_a.map { |x| [x, 0] }
-    (0..rows-1).each do |y|
-      border << [0, y]
-    end
-    border << (rows-1..columns-1).to_a.map { |x| [x, 0] }
-    border
+    border << (0..columns-1).map { |x| [x, 0] }
+    border << (0..rows-1).map { |y| [0, y] }
+    border << (0..rows-1).map { |y| [columns-1, y] }
+    border << (0..columns-1).map { |x| [x, rows] }
+    border.flatten(1)
   end
 
   def draw_snake

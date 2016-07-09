@@ -21,27 +21,31 @@ class Game
     @tick = 0
 
     loop do
-      render
-      sleep 0.1
-      @tick += 1
-      network.receive_updates do |data|
-        key = data[:hostname]
-        unless key == network.hostname
-          @other_sneks[key] = unpack_snek(data[:snek])
-        end
-        @food_positions[data[:random_number]] = data[:food_position]
-      end
-      network.send_update(
-        snek: pack_snek(@snek),
-        random_number: @random_number,
-        food_position: @local_food_position,
-      )
+      tick
     end
   end
 
   private
 
   attr_reader :frame
+
+  def tick
+    render
+    sleep 0.1
+    @tick += 1
+    network.receive_updates do |data|
+      key = data[:hostname]
+      unless key == network.hostname
+        @other_sneks[key] = unpack_snek(data[:snek])
+      end
+      @food_positions[data[:random_number]] = data[:food_position]
+    end
+    network.send_update(
+      snek: pack_snek(@snek),
+      random_number: @random_number,
+      food_position: @local_food_position,
+    )
+  end
 
   def pack_snek(snek)
     snek.flatten.join(',')

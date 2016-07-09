@@ -82,12 +82,7 @@ class Game
       draw_food
 
       check_border_collision(border, new_position)
-
-      if @snek.include?(@food)
-        @snek.length += 1
-        @local_food_position = random_position
-        @food = @food_positions.max_by { |k, v| k }.last || @local_food_position
-      end
+      check_food_collision
 
       input do |key|
         if key
@@ -120,6 +115,14 @@ class Game
       add_message 'you crashed into a wall'
       reset_snake
       return
+    end
+  end
+
+  def check_food_collision
+    if @snek.include?(@food)
+      @snek.length += 1
+      @local_food_position = random_position
+      @food = @food_positions.max_by { |k, v| k }.last || @local_food_position
     end
   end
 

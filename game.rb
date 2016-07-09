@@ -81,11 +81,7 @@ class Game
       draw_sneks
       draw_food
 
-      if border.include?(new_position)
-        add_message 'you crashed into a wall'
-        reset_snake
-        return
-      end
+      check_border_collision(border, new_position)
 
       if @snek.include?(@food)
         @snek.length += 1
@@ -116,6 +112,14 @@ class Game
       end
 
       frame.render
+    end
+  end
+
+  def check_border_collision(border, new_position)
+    if border.include?(new_position)
+      add_message 'you rashed into a wall'
+      reset_snake
+      return
     end
   end
 

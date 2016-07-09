@@ -33,6 +33,11 @@ class Game
     render
     sleep 0.1
     @tick += 1
+
+    update_network
+  end
+
+  def update_network
     network.receive_updates do |data|
       key = data[:hostname]
       unless key == network.hostname

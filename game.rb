@@ -115,8 +115,8 @@ class Game
   end
 
   def draw_snake
-    @snek.each do |segment|
-      frame.draw *segment, '*'
+    @snek.each_with_index do |segment, index|
+      frame.draw *segment, index == @snek.count-1 ? '@' : '*'
     end
   end
 

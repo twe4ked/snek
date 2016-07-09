@@ -117,7 +117,7 @@ class Game
 
   def check_border_collision(border, new_position)
     if border.include?(new_position)
-      add_message 'you rashed into a wall'
+      add_message 'you crashed into a wall'
       reset_snake
       return
     end

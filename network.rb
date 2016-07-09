@@ -2,9 +2,11 @@ require 'socket'
 require 'yaml'
 
 class Network
+  PORT = 47357
+
   def open_socket
     @socket = UDPSocket.new
-    @socket.bind '0.0.0.0', 47357
+    @socket.bind '0.0.0.0', PORT
     @socket.setsockopt Socket::SOL_SOCKET, Socket::SO_REUSEADDR, true
     @socket.setsockopt Socket::SOL_SOCKET, Socket::SO_BROADCAST, true
   rescue Errno::EADDRINUSE
@@ -28,7 +30,7 @@ class Network
     data = data.merge(hostname: hostname)
 
     begin
-      @socket.send data.to_yaml, 0, '255.255.255.255', 47357
+      @socket.send data.to_yaml, 0, '255.255.255.255', PORT
     rescue Errno::EHOSTUNREACH, Errno::ENETUNREACH
     end
   end

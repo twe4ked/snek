@@ -110,9 +110,8 @@ class Game
     end
   end
 
+  # TODO: non-conflicting
   def random_position
-    # TODO: non-conflicting
-
     x = (1..columns-2).to_a.sample
     y = (1..rows-2).to_a.sample
 

@@ -82,7 +82,7 @@ class Game
       draw_food
 
       check_border_collision(border, new_position)
-      check_food_collision
+      check_food_collision(new_position)
 
       input do |key|
         if key
@@ -118,8 +118,8 @@ class Game
     end
   end
 
-  def check_food_collision
-    if @snek.include?(@food)
+  def check_food_collision(new_position)
+    if @food == new_position
       @snek.length += 1
       @local_food_position = random_position
       @food = @food_positions.max_by { |k, v| k }.last || @local_food_position

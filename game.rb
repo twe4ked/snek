@@ -6,18 +6,16 @@ require 'snek'
 require 'network'
 
 class Game
-  DIRECTIONS = %w[n s e w]
-
   def initialize
-    @direction = random_direction
     @food = @local_food_position = random_position
     @random_number = rand
+    @messages = {}
   end
 
   def start
     network.open_socket
     Frame.setup
-    @snek = Snek.new([random_position])
+    reset_snake
     @other_sneks = {}
     @food_positions = {}
     @tick = 0
@@ -66,17 +64,18 @@ class Game
   def render
     @frame = Frame.new columns, rows
 
-    if @tick % 2 == 0 || %w[e w].include?(@direction)
+    if @tick % 2 == 0 || %w[e w].include?(@snek.direction)
       new_position = move_snek
 
       border = draw_border
+      draw_messages
       draw_sneks
       draw_food
 
       if border.include?(new_position)
-        puts
-        puts 'you crashed into a wall'
-        exit
+        add_message 'you crashed into a wall'
+        reset_snake
+        return
       end
 
       if @snek.include?(@food)
@@ -97,13 +96,13 @@ class Game
         when 'q'.ord, 27, 3 # escape, ctrl-c
           exit
         when 119 # W up
-          @direction = 'n' if @direction != 's'
+          @snek.direction = 'n' if @snek.direction != 's'
         when 115 # S down
-          @direction = 's' if @direction != 'n'
+          @snek.direction = 's' if @snek.direction != 'n'
         when 100 # D right
-          @direction = 'e' if @direction != 'w'
+          @snek.direction = 'e' if @snek.direction != 'w'
         when 97  # A left
-          @direction = 'w' if @direction != 'e'
+          @snek.direction = 'w' if @snek.direction != 'e'
         end
       end
 
@@ -118,10 +117,6 @@ class Game
     y = (1..rows-2).to_a.sample
 
     [x,y]
-  end
-
-  def random_direction
-    DIRECTIONS.sample
   end
 
   def draw_border
@@ -162,7 +157,7 @@ class Game
   def move_snek
     x, y = @snek.last
 
-    new_position = case @direction
+    new_position = case @snek.direction
     when 'n'
       [x, y - 1]
     when 's'
@@ -174,16 +169,16 @@ class Game
     end
 
     if @snek.include?(new_position)
-      puts
-      puts 'you crashed into yourself'
-      exit
+      add_message 'you crashed into yourself'
+      reset_snake
+      return
     end
 
     @other_sneks.each do |hostname, snek|
       if snek.include?(new_position)
-        puts
-        puts "you crashed into #{hostname}"
-        exit
+        add_message "you crashed into #{hostname}"
+        reset_snake
+        return
       end
     end
 
@@ -205,12 +200,28 @@ class Game
     @network ||= Network.new
   end
 
+  def reset_snake
+    @snek = Snek.new([random_position])
+  end
+
   def debug
     puts "\r"
     Frame.enable_cursor
     $stdin.cooked!
     system 'stty sane'
     require 'pry'; binding.pry
+  end
+
+  def add_message(message)
+    @messages[message] = @tick + 10
+  end
+
+  def draw_messages
+    @messages.each do |message, end_tick|
+      if @tick < end_tick
+        frame.draw_center rows/2, message
+      end
+    end
   end
 end
 

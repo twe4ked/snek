@@ -31,6 +31,12 @@ class Frame
     end
   end
 
+  def draw_center(y, sprite)
+    sprite_width = sprite.split("\n").first.size
+    x = self.width / 2 - sprite_width / 2
+    draw x, y, sprite
+  end
+
   def render
     @rows.each_with_index do |row, i|
       Frame.move_cursor 0, i

@@ -171,6 +171,14 @@ class Game
       exit
     end
 
+    @other_sneks.each do |hostname, snek|
+      if snek.include?(new_position)
+        puts
+        puts "you crashed into #{hostname}"
+        exit
+      end
+    end
+
     @snek << new_position
     new_position
   end

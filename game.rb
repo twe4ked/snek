@@ -10,7 +10,8 @@ class Game
 
   def initialize
     @direction = random_direction
-    @food = random_position
+    @food = @local_food_position = random_position
+    @random_number = rand
   end
 
   def start
@@ -18,6 +19,7 @@ class Game
     Frame.setup
     @snek = Snek.new([random_position])
     @other_sneks = {}
+    @food_positions = {}
     @tick = 0
 
     loop do
@@ -29,8 +31,13 @@ class Game
         unless key == network.hostname
           @other_sneks[key] = unpack_snek(data[:snek])
         end
+        @food_positions[data[:random_number]] = data[:food_position]
       end
-      network.send_update snek: pack_snek(@snek)
+      network.send_update(
+        snek: pack_snek(@snek),
+        random_number: @random_number,
+        food_position: @local_food_position,
+      )
     end
   end
 
@@ -74,7 +81,8 @@ class Game
 
       if @snek.include?(@food)
         @snek.length += 1
-        @food = random_position
+        @local_food_position = random_position
+        @food = @food_positions.max_by { |k, v| k }.last || @local_food_position
       end
 
       input do |key|

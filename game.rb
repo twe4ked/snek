@@ -60,6 +60,11 @@ class Game
       end
 
       input do |key|
+        if key
+          return if @tick == @input_in_tick
+          @input_in_tick = @tick
+        end
+
         head = @snek.last
 
         case key

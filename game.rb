@@ -58,7 +58,22 @@ class Game
       @food = random_position
     end
 
-    input
+    input do |key|
+      head = @snek.last
+
+      case key
+      when 'q'.ord, 27, 3 # escape, ctrl-c
+        exit
+      when 119 # W up
+        @direction = 'n' if @direction != 's'
+      when 115 # S down
+        @direction = 's' if @direction != 'n'
+      when 100 # D right
+        @direction = 'e' if @direction != 'w'
+      when 97  # A left
+        @direction = 'w' if @direction != 'e'
+      end
+    end
 
     frame.render
   end
@@ -131,21 +146,7 @@ class Game
     begin
       loop do
         key = $stdin.read_nonblock(1).ord
-
-        head = @snek.last
-
-        case key
-        when 'q'.ord, 27, 3 # escape, ctrl-c
-          exit
-        when 119 # W up
-          @direction = 'n' if @direction != 's'
-        when 115 # S down
-          @direction = 's' if @direction != 'n'
-        when 100 # D right
-          @direction = 'e' if @direction != 'w'
-        when 97  # A left
-          @direction = 'w' if @direction != 'e'
-        end
+        yield key
       end
     rescue Errno::EAGAIN
     end

@@ -3,6 +3,7 @@ $LOAD_PATH << '.'
 require 'io/console'
 require 'frame'
 require 'snek'
+require 'network'
 
 class Game
   DIRECTIONS = %w[n s e w]
@@ -13,20 +14,35 @@ class Game
   end
 
   def start
+    network.open_socket
     Frame.setup
     @snek = Snek.new([random_position])
+    @other_sneks = {}
     @tick = 0
 
     loop do
       render
       sleep 0.1
       @tick += 1
+      network.receive_updates do |data|
+        key = data[:hostname]
+        @other_sneks[key] = unpack_snek(data[:snek])
+      end
+      network.send_update snek: pack_snek(@snek)
     end
   end
 
   private
 
   attr_reader :frame
+
+  def pack_snek(snek)
+    snek.flatten.join(',')
+  end
+
+  def unpack_snek(snek)
+    snek.split(',').map(&:to_i).each_slice(2).to_a
+  end
 
   def rows
     $stdin.winsize[0]
@@ -156,6 +172,10 @@ class Game
       end
     rescue Errno::EAGAIN
     end
+  end
+
+  def network
+    @network ||= Network.new
   end
 
   def debug

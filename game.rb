@@ -42,10 +42,10 @@ class Game
     @frame = Frame.new columns, rows
 
     if @tick % 2 == 0 || %w[e w].include?(@direction)
-      new_position = move_snake
+      new_position = move_snek
 
       border = draw_border
-      draw_snake
+      draw_snek
       draw_food
 
       if border.include?(new_position)
@@ -114,7 +114,7 @@ class Game
     border.flatten(1)
   end
 
-  def draw_snake
+  def draw_snek
     @snek.each_with_index do |segment, index|
       frame.draw *segment, index == @snek.count-1 ? '@' : '*'
     end
@@ -124,7 +124,7 @@ class Game
     frame.draw *@food, '$'
   end
 
-  def move_snake
+  def move_snek
     x, y = @snek.last
 
     new_position = case @direction

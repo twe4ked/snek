@@ -157,6 +157,14 @@ class Game
     rescue Errno::EAGAIN
     end
   end
+
+  def debug
+    puts "\r"
+    Frame.enable_cursor
+    $stdin.cooked!
+    system 'stty sane'
+    require 'pry'; binding.pry
+  end
 end
 
 Game.new.start

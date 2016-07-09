@@ -41,41 +41,43 @@ class Game
   def render
     @frame = Frame.new columns, rows
 
-    new_position = move_snake if (@tick % 2 == 0 || %w[e w].include?(@direction))
+    if @tick % 2 == 0 || %w[e w].include?(@direction)
+      new_position = move_snake
 
-    border = draw_border
-    draw_snake
-    draw_food
+      border = draw_border
+      draw_snake
+      draw_food
 
-    if border.include?(new_position)
-      puts
-      puts 'you crashed into a wall'
-      exit
-    end
-
-    if @snek.include?(@food)
-      @snek.length += 1
-      @food = random_position
-    end
-
-    input do |key|
-      head = @snek.last
-
-      case key
-      when 'q'.ord, 27, 3 # escape, ctrl-c
+      if border.include?(new_position)
+        puts
+        puts 'you crashed into a wall'
         exit
-      when 119 # W up
-        @direction = 'n' if @direction != 's'
-      when 115 # S down
-        @direction = 's' if @direction != 'n'
-      when 100 # D right
-        @direction = 'e' if @direction != 'w'
-      when 97  # A left
-        @direction = 'w' if @direction != 'e'
       end
-    end
 
-    frame.render
+      if @snek.include?(@food)
+        @snek.length += 1
+        @food = random_position
+      end
+
+      input do |key|
+        head = @snek.last
+
+        case key
+        when 'q'.ord, 27, 3 # escape, ctrl-c
+          exit
+        when 119 # W up
+          @direction = 'n' if @direction != 's'
+        when 115 # S down
+          @direction = 's' if @direction != 'n'
+        when 100 # D right
+          @direction = 'e' if @direction != 'w'
+        when 97  # A left
+          @direction = 'w' if @direction != 'e'
+        end
+      end
+
+      frame.render
+    end
   end
 
   def random_position

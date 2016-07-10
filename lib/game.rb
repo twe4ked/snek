@@ -4,6 +4,7 @@ require 'frame'
 require 'snek'
 require 'network'
 require 'sound'
+require 'input'
 
 class Game
   def initialize
@@ -109,7 +110,7 @@ class Game
       check_border_collision(border, new_position)
       check_food_collision(new_position)
 
-      input do |key|
+      Input.call do |key|
         if key
           return if @tick == @input_in_tick
           @input_in_tick = @tick
@@ -246,16 +247,6 @@ class Game
 
     @snek << new_position
     new_position
-  end
-
-  def input
-    begin
-      loop do
-        key = $stdin.read_nonblock(1).ord
-        yield key
-      end
-    rescue Errno::EAGAIN
-    end
   end
 
   def network

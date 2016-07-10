@@ -95,7 +95,7 @@ class Game
   end
 
   def render
-    @frame = Frame.new columns, rows
+    @frame = Frame.new columns, rows + 10
 
     if @tick % 2 == 0 || %w[e w].include?(@snek.direction)
       new_position = move_snek
@@ -104,6 +104,7 @@ class Game
       draw_messages
       draw_sneks
       draw_food
+      draw_scores
 
       check_border_collision(border, new_position)
       check_food_collision(new_position)
@@ -199,6 +200,19 @@ class Game
 
   def draw_food
     frame.draw *@food, '$'
+  end
+
+  def draw_scores
+    draw_score @head, network.hostname, @snek.length, rows
+
+    @other_sneks.each_with_index do |data, i|
+      hostname, snek = data
+      draw_score(snek[:head], hostname, snek[:snek].length, rows + i + 1)
+    end
+  end
+
+  def draw_score(head, name, score, position)
+    frame.draw 0, position, "#{head}  #{score} #{name}"
   end
 
   def move_snek

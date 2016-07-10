@@ -14,14 +14,6 @@ module GameEngine
       @rows.size
     end
 
-    def positions
-      @rows.map.each_with_index do |row, y|
-        row.chars.map.each_with_index do |char, x|
-          [x, y] if char != ' '
-        end.compact
-      end.flatten(1)
-    end
-
     def draw(x, y, sprite)
       lines = sprite.split("\n")
 

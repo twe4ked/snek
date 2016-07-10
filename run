@@ -4,4 +4,17 @@ $LOAD_PATH << './lib'
 
 require 'game'
 
-Game.new(head: ENV['HEAD']).start
+options = {}
+
+ARGV.each do |arg|
+  option, value = arg.split('=')
+  options[option] = value
+end
+
+head = options['--head'] || options['-h']
+
+if !options.empty? && head.nil?
+  $stderr.puts "#{$0}: usage: [-h=[char]|--head=[char]]"
+else
+  Game.new(head: head).start
+end

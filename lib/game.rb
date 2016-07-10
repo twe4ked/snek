@@ -208,7 +208,7 @@ class Game
   end
 
   def draw_score(head, name, score, position)
-    frame.draw 0, position, "#{head}  #{score} #{name}"
+    frame.draw 0, position, "#{head[0]}  #{score} #{name}"
   end
 
   def move_snek

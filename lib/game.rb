@@ -1,11 +1,7 @@
 require 'logger'
 require 'io/console'
-require 'game_engine/frame'
-require 'game_engine/input'
-require 'game_engine/network'
-require 'game_engine/sound'
-require 'game_engine/engine'
-require 'snek'
+
+Dir[File.dirname(__FILE__) + "/**/*.rb"].each { |f| require f }
 
 class Game
   def initialize(head:)

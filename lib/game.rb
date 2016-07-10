@@ -19,7 +19,7 @@ class Game
   end
 
   def start
-    Sound.play 'snek'
+    Sound.play 'startup.wav'
     network.open_socket
     Frame.setup
     reset_snake
@@ -137,7 +137,7 @@ class Game
 
   def check_border_collision(border, new_position)
     if border.include?(new_position)
-      Sound.play 'splat'
+      crash_sound
       add_message 'you crashed into a wall'
       reset_snake
       return
@@ -146,7 +146,7 @@ class Game
 
   def check_food_collision(new_position)
     if @food == new_position
-      Sound.play 'boop'
+      Sound.play 'pickup.wav'
       @snek.length += 1
       @local_food_position = random_position
       @food_eaten_count += 1
@@ -202,11 +202,12 @@ class Game
   end
 
   def draw_scores
-    draw_score @head, network.hostname, @snek.length, rows
+    draw_score (@head || '@'), network.hostname, @snek.length, rows
 
     @other_sneks.each_with_index do |data, i|
       hostname, snek = data
-      draw_score(snek[:head], hostname, snek[:snek].length, rows + i + 1)
+      head = snek[:head] || '&'
+      draw_score(head, hostname, snek[:snek].length, rows + i + 1)
     end
   end
 
@@ -229,7 +230,7 @@ class Game
     end
 
     if @snek.include?(new_position)
-      Sound.play 'splat'
+      crash_sound
       add_message 'you crashed into yourself'
       reset_snake
       return
@@ -237,7 +238,6 @@ class Game
 
     @other_sneks.each do |hostname, snek|
       if snek[:snek].include?(new_position)
-        Sound.play 'splat'
         add_message "you crashed into #{hostname}"
         reset_snake
         return
@@ -288,5 +288,9 @@ class Game
         frame.draw_center rows/2, message
       end
     end
+  end
+
+  def crash_sound
+    Sound.play 'explosion.wav'
   end
 end

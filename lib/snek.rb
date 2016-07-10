@@ -1,16 +1,16 @@
 class Snek < Array
   DIRECTIONS = %w[n s e w]
 
-  attr_accessor :length, :direction
+  attr_accessor :snek_length, :direction
 
   def initialize(*args)
-    @length = 4
+    @snek_length = 5
     @direction = random_direction
     super
   end
 
   def <<(*args)
-    shift if count > length
+    shift if count >= snek_length
 
     super
   end

@@ -147,7 +147,7 @@ class Game
   def check_food_collision(new_position)
     if @food == new_position
       Sound.play 'pickup.wav'
-      @snek.length += 1
+      @snek.snake_length += 1
       @local_food_position = random_position
       @food_eaten_count += 1
     end

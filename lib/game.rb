@@ -20,9 +20,9 @@ class Game
   end
 
   def start
-    Sound.play 'startup.wav'
+    GameEngine::Sound.play 'startup.wav'
     network.open_socket
-    Frame.setup
+    GameEngine::Frame.setup
     reset_snek
 
     loop do
@@ -96,7 +96,7 @@ class Game
   end
 
   def render
-    @frame = Frame.new columns, rows + 10
+    @frame = GameEngine::Frame.new columns, rows + 10
 
     if @tick % 2 == 0 || %w[e w].include?(@snek.direction)
       new_position = move_snek
@@ -110,7 +110,7 @@ class Game
       check_border_collision(border, new_position)
       check_food_collision(new_position)
 
-      Input.call do |key|
+      GameEngine::Input.call do |key|
         if key
           return if @tick == @input_in_tick
           @input_in_tick = @tick
@@ -147,7 +147,7 @@ class Game
 
   def check_food_collision(new_position)
     if @food == new_position
-      Sound.play 'pickup.wav'
+      GameEngine::Sound.play 'pickup.wav'
       @snek.snek_length += 1
       @local_food_position = random_position
       @food_eaten_count += 1
@@ -250,7 +250,7 @@ class Game
   end
 
   def network
-    @network ||= Network.new
+    @network ||= GameEngine::Network.new
   end
 
   def logger
@@ -282,6 +282,6 @@ class Game
   end
 
   def crash_sound
-    Sound.play 'explosion.wav'
+    GameEngine::Sound.play 'explosion.wav'
   end
 end

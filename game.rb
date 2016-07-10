@@ -1,5 +1,3 @@
-$LOAD_PATH << '.'
-
 require 'logger'
 require 'io/console'
 require 'frame'
@@ -275,5 +273,3 @@ class Game
     end
   end
 end
-
-Game.new.start

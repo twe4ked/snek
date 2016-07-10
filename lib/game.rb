@@ -81,12 +81,12 @@ class Game
   end
 
   def rows
-    $stdin.winsize[0]
+    GameEngine::Window.rows
     25
   end
 
   def columns
-    $stdin.winsize[1]
+    GameEngine::Window.columns
     80
   end
 

@@ -4,6 +4,7 @@ require 'game_engine/frame'
 require 'game_engine/input'
 require 'game_engine/network'
 require 'game_engine/sound'
+require 'game_engine/engine'
 require 'snek'
 
 class Game
@@ -14,7 +15,6 @@ class Game
     @other_sneks = {}
     @food_positions = {}
     @food_eaten_counts = {}
-    @tick = 0
     @food_eaten_count = 0
     @head = ENV['HEAD']
   end
@@ -25,22 +25,17 @@ class Game
     GameEngine::Frame.setup
     reset_snek
 
-    loop do
-      tick
+    GameEngine::Engine.tick do |tick|
+      @tick = tick
+
+      render
+      update_network
     end
   end
 
   private
 
   attr_reader :frame
-
-  def tick
-    render
-    sleep 0.1
-    @tick += 1
-
-    update_network
-  end
 
   def update_network
     network.receive_updates do |data|

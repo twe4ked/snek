@@ -222,7 +222,7 @@ class Game
     end
 
     @other_sneks.each do |hostname, snek|
-      if snek.include?(new_position)
+      if snek[:snek].include?(new_position)
         Sound.play 'splat'
         add_message "you crashed into #{hostname}"
         reset_snake

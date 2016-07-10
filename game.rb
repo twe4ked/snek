@@ -181,16 +181,16 @@ class Game
   end
 
   def draw_sneks
-    draw_snek @snek
+    draw_snek @snek, head: (@head || '@')
 
     @other_sneks.values.each do |snek|
       draw_snek snek[:snek], head: (snek[:head] || '&')
     end
   end
 
-  def draw_snek(snek, head: '@')
+  def draw_snek(snek, head:)
     snek.each_with_index do |segment, index|
-      char = index == snek.count-1 ? (@head || head) : '*'
+      char = index == snek.count-1 ? head : '*'
       frame.draw *segment, char
     end
   end

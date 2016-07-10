@@ -122,6 +122,7 @@ class Game
     if @food == new_position
       @snek.length += 1
       @local_food_position = random_position
+      @random_number += 1
       @food = random_remote_position || @local_food_position
     end
   end

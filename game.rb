@@ -13,7 +13,9 @@ class Game
     @messages = {}
     @other_sneks = {}
     @food_positions = {}
+    @food_eaten_counts = {}
     @tick = 0
+    @food_eaten_count = 0
   end
 
   def start
@@ -45,28 +47,28 @@ class Game
         @other_sneks[hostname] = unpack_snek(data[:snek])
       end
 
-      update_food_positions(data[:random_number], data[:food_position])
+      update_food_positions(data[:random_number], data[:food_position], data[:food_eaten_count])
     end
     network.send_update(
       snek: pack_snek(@snek),
       random_number: @random_number,
       food_position: @local_food_position,
+      food_eaten_count: @food_eaten_count,
     )
   end
 
-  def update_food_positions(id, value)
-    if @food_positions[id] && @food_positions[id] == value
-      # food has not been eaten
-    end
+  def update_food_positions(id, value, food_eaten_count)
+    cached_food_eaten_count = @food_eaten_counts[id]
 
-    if @food_positions[id] && @food_positions[id] != value
-      # food has been eaten
-      @local_food_position = random_position
-      @food_positions[id] = value
-      @food = max_remote_food_position
+    if cached_food_eaten_count != food_eaten_count
+      if id != @random_number
+        @local_food_position = random_position
+      end
+      @food_eaten_counts[id] = food_eaten_count
     end
 
     @food_positions[id] = value
+    @food = max_remote_food_position
   end
 
   def pack_snek(snek)
@@ -140,6 +142,7 @@ class Game
       log 'eat'
       @snek.length += 1
       @local_food_position = random_position
+      @food_eaten_count += 1
     end
   end
 

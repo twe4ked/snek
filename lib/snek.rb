@@ -15,6 +15,11 @@ class Snek < Array
     super
   end
 
+  alias_method :orig_inspect, :inspect
+  def inspect
+    "#<Snek @snek_length=#{@snek_length.inspect} self=#{orig_inspect.inspect}>"
+  end
+
   private
 
   def random_direction

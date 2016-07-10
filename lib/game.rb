@@ -22,7 +22,7 @@ class Game
     Sound.play 'startup.wav'
     network.open_socket
     Frame.setup
-    reset_snake
+    reset_snek
 
     loop do
       tick
@@ -139,7 +139,7 @@ class Game
     if border.include?(new_position)
       crash_sound
       add_message 'you crashed into a wall'
-      reset_snake
+      reset_snek
       return
     end
   end
@@ -147,7 +147,7 @@ class Game
   def check_food_collision(new_position)
     if @food == new_position
       Sound.play 'pickup.wav'
-      @snek.snake_length += 1
+      @snek.snek_length += 1
       @local_food_position = random_position
       @food_eaten_count += 1
     end
@@ -232,14 +232,14 @@ class Game
     if @snek.include?(new_position)
       crash_sound
       add_message 'you crashed into yourself'
-      reset_snake
+      reset_snek
       return
     end
 
     @other_sneks.each do |hostname, snek|
       if snek[:snek].include?(new_position)
         add_message "you crashed into #{hostname}"
-        reset_snake
+        reset_snek
         return
       end
     end
@@ -270,7 +270,7 @@ class Game
     end
   end
 
-  def reset_snake
+  def reset_snek
     @snek = Snek.new([random_position])
   end
 

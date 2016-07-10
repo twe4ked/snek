@@ -40,7 +40,7 @@ module GameEngine
 
       begin
         @socket.send data.to_yaml, 0, '255.255.255.255', PORT
-      rescue Errno::EHOSTUNREACH, Errno::ENETUNREACH, Errno::EMSGSIZE => error
+      rescue Errno::EHOSTUNREACH, Errno::ENETUNREACH, Errno::EMSGSIZE, Errno::ENETDOWN => error
         logger.error error
       end
     end

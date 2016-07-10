@@ -1,9 +1,16 @@
+require 'logger'
 require 'socket'
 require 'yaml'
 
 module GameEngine
   class Network
     PORT = 47357
+
+    attr_reader :logger
+
+    def initialize(logger: Logger.new('/dev/null'))
+      @logger = logger
+    end
 
     def open_socket
       @socket = UDPSocket.new
@@ -21,7 +28,8 @@ module GameEngine
           data, addr = @socket.recvfrom_nonblock 8192
           data = YAML.load(data)
           block.call(data)
-        rescue Psych::SyntaxError
+        rescue Psych::SyntaxError => error
+          logger.error error
         end
       end
     rescue Errno::EAGAIN
@@ -32,7 +40,8 @@ module GameEngine
 
       begin
         @socket.send data.to_yaml, 0, '255.255.255.255', PORT
-      rescue Errno::EHOSTUNREACH, Errno::ENETUNREACH
+      rescue Errno::EHOSTUNREACH, Errno::ENETUNREACH => error
+        logger.error error
       end
     end
 

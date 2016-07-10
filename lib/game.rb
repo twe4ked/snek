@@ -22,7 +22,7 @@ class Game
   def start
     GameEngine::Sound.play 'startup.wav'
 
-    @network = GameEngine::Network.new
+    @network = GameEngine::Network.new logger: logger
     @network.open_socket
 
     reset_snek

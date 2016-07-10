@@ -122,8 +122,12 @@ class Game
     if @food == new_position
       @snek.length += 1
       @local_food_position = random_position
-      @food = @food_positions.max_by { |k, v| k }.last || @local_food_position
+      @food = random_remote_position || @local_food_position
     end
+  end
+
+  def random_remote_position
+    @food_positions.max_by { |k, v| k }.last
   end
 
   # TODO: non-conflicting

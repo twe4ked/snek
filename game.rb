@@ -11,15 +11,15 @@ class Game
     @food = @local_food_position = random_position
     @random_number = rand
     @messages = {}
+    @other_sneks = {}
+    @food_positions = {}
+    @tick = 0
   end
 
   def start
     network.open_socket
     Frame.setup
     reset_snake
-    @other_sneks = {}
-    @food_positions = {}
-    @tick = 0
 
     loop do
       tick

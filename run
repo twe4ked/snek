@@ -4,4 +4,4 @@ $LOAD_PATH << './lib'
 
 require 'game'
 
-Game.new.start
+Game.new(head: ENV['HEAD']).start

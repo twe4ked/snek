@@ -8,7 +8,7 @@ require 'game_engine/engine'
 require 'snek'
 
 class Game
-  def initialize
+  def initialize(head:)
     @food = @local_food_position = random_position
     @random_number = rand
     @messages = {}
@@ -16,7 +16,7 @@ class Game
     @food_positions = {}
     @food_eaten_counts = {}
     @food_eaten_count = 0
-    @head = ENV['HEAD']
+    @head = head
   end
 
   def start

@@ -251,7 +251,7 @@ class Game
   def logger
     @logger ||= Logger.new('snek.log').tap do |logger|
       logger.formatter = lambda do |severity, datetime, progname, msg|
-        "#{datetime.strftime('%M:%S')}: #{msg}\n"
+        "[#{severity}] #{datetime.strftime('%M:%S')}: #{msg}\n"
       end
     end
   end

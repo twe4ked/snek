@@ -1,5 +1,6 @@
 $LOAD_PATH << '.'
 
+require 'logger'
 require 'io/console'
 require 'frame'
 require 'snek'
@@ -44,6 +45,7 @@ class Game
         @other_sneks[key] = unpack_snek(data[:snek])
       end
       @food_positions[data[:random_number]] = data[:food_position]
+      log @food_positions.to_s
     end
     network.send_update(
       snek: pack_snek(@snek),
@@ -120,6 +122,7 @@ class Game
 
   def check_food_collision(new_position)
     if @food == new_position
+      log 'eat'
       @snek.length += 1
       @local_food_position = random_position
       @random_number += 1
@@ -220,6 +223,14 @@ class Game
     @network ||= Network.new
   end
 
+  def logger
+    @logger ||= Logger.new('snek.log').tap do |logger|
+      logger.formatter = lambda do |severity, datetime, progname, msg|
+        "#{datetime.strftime('%M:%S')}: #{msg}\n"
+      end
+    end
+  end
+
   def reset_snake
     @snek = Snek.new([random_position])
   end
@@ -230,6 +241,10 @@ class Game
     $stdin.cooked!
     system 'stty sane'
     require 'pry'; binding.pry
+  end
+
+  def log(message)
+    logger.info message
   end
 
   def add_message(message)

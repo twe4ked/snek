@@ -177,7 +177,7 @@ class Game
     border << (0..columns-1).map { |x| [x, 0] }
     border << (0..rows-1).map { |y| [0, y] }
     border << (0..rows-1).map { |y| [columns-1, y] }
-    border << (0..columns-1).map { |x| [x, rows] }
+    border << (0..columns-1).map { |x| [x, rows-1] }
     border.flatten(1)
   end
 

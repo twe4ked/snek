@@ -234,6 +234,7 @@ class Game
 
     @other_sneks.each do |hostname, snek|
       if snek[:snek].include?(new_position)
+        crash_sound
         add_message "you crashed into #{hostname}"
         reset_snek
         return

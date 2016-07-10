@@ -3,6 +3,7 @@ require 'io/console'
 require 'frame'
 require 'snek'
 require 'network'
+require 'sound'
 
 class Game
   def initialize
@@ -129,6 +130,7 @@ class Game
 
   def check_border_collision(border, new_position)
     if border.include?(new_position)
+      Sound.play 'splat'
       add_message 'you crashed into a wall'
       reset_snake
       return
@@ -137,6 +139,7 @@ class Game
 
   def check_food_collision(new_position)
     if @food == new_position
+      Sound.play 'boop'
       log 'eat'
       @snek.length += 1
       @local_food_position = random_position
@@ -206,6 +209,7 @@ class Game
     end
 
     if @snek.include?(new_position)
+      Sound.play 'splat'
       add_message 'you crashed into yourself'
       reset_snake
       return
@@ -213,6 +217,7 @@ class Game
 
     @other_sneks.each do |hostname, snek|
       if snek.include?(new_position)
+        Sound.play 'splat'
         add_message "you crashed into #{hostname}"
         reset_snake
         return

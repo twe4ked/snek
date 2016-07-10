@@ -260,14 +260,6 @@ class Game
     @snek = Snek.new([random_position])
   end
 
-  def debug
-    puts "\r"
-    Frame.enable_cursor
-    $stdin.cooked!
-    system 'stty sane'
-    require 'pry'; binding.pry
-  end
-
   def log(message)
     logger.info message
   end

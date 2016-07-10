@@ -44,8 +44,11 @@ class Game
       unless hostname == network.hostname
         @other_sneks[hostname] = unpack_snek(data[:snek])
       end
+
       @food_positions[data[:random_number]] = data[:food_position]
+      @food = max_remote_food_position
       log @food_positions.to_s
+      log local_food_position: @local_food_position, food: @food
     end
     network.send_update(
       snek: pack_snek(@snek),
@@ -126,7 +129,6 @@ class Game
       @snek.length += 1
       @local_food_position = random_position
       @random_number += 1
-      @food = max_remote_food_position || @local_food_position
     end
   end
 

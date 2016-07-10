@@ -18,7 +18,18 @@ module GameEngine
       lines = sprite.split("\n")
 
       lines.each_with_index do |line, i|
-        if line.size > 0 && x+line.size <= self.width && y+lines.size <= self.height && y+i >= 0
+        if line.size > 0 && y+lines.size <= self.height && y+i >= 0
+          # crop when drawing off left
+          if x < 0
+            line = line[x.abs..-1]
+            x = 0
+          end
+
+          # crop when drawing off right
+          if x+line.size-1 >= self.width
+            line = line[0..(self.width-1)-(x+line.size)]
+          end
+
           @rows[y+i][x..x+line.size-1] = line
         end
       end

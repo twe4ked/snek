@@ -21,26 +21,34 @@ RSpec.describe GameEngine::Frame do
       ]
     end
 
-    it 'draws off the right hand side' do
-      frame.draw 10, 0, 'foo'
+    it 'draws off the left' do
+      frame.draw -1, 1, 'foo'
 
-      expect(frame.rows).to eq blank_5_x_3_frame
+      expect(frame.rows).to eq [
+        '     ',
+        'oo   ',
+        '     ',
+      ]
     end
 
-    it 'draws at the right edge' do
-      frame.draw 5, 0, 'f'
+    it 'draws off the right' do
+      frame.draw 3, 1, 'foo'
 
-      expect(frame.rows).to eq blank_5_x_3_frame
+      expect(frame.rows).to eq [
+        '     ',
+        '   fo',
+        '     ',
+      ]
     end
 
     it 'draws off the bottom' do
-      frame.draw 0, 3, 'f'
+      frame.draw 0, 3, 'foo'
 
       expect(frame.rows).to eq blank_5_x_3_frame
     end
 
     it 'draws off the top' do
-      frame.draw 0, -1, 'f'
+      frame.draw 0, -1, 'foo'
 
       expect(frame.rows).to eq blank_5_x_3_frame
     end

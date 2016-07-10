@@ -15,6 +15,7 @@ class Game
     @food_eaten_counts = {}
     @tick = 0
     @food_eaten_count = 0
+    @head = ENV['HEAD']
   end
 
   def start
@@ -43,7 +44,10 @@ class Game
     network.receive_updates do |data|
       hostname = data[:hostname]
       unless hostname == network.hostname
-        @other_sneks[hostname] = unpack_snek(data[:snek])
+        @other_sneks[hostname] = {
+          snek: unpack_snek(data[:snek]),
+          head: data[:head],
+        }
       end
 
       update_food_positions(data[:random_number], data[:food_position], data[:food_eaten_count])
@@ -53,6 +57,7 @@ class Game
       random_number: @random_number,
       food_position: @local_food_position,
       food_eaten_count: @food_eaten_count,
+      head: @head,
     )
   end
 
@@ -179,13 +184,13 @@ class Game
     draw_snek @snek
 
     @other_sneks.values.each do |snek|
-      draw_snek snek, head: '&'
+      draw_snek snek[:snek], head: (snek[:head] || '&')
     end
   end
 
   def draw_snek(snek, head: '@')
     snek.each_with_index do |segment, index|
-      char = index == snek.count-1 ? head : '*'
+      char = index == snek.count-1 ? (@head || head) : '*'
       frame.draw *segment, char
     end
   end

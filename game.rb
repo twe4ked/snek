@@ -189,6 +189,7 @@ class Game
   end
 
   def draw_snek(snek, head:)
+    head = head[0]
     snek.each_with_index do |segment, index|
       char = index == snek.count-1 ? head : '*'
       frame.draw *segment, char

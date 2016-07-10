@@ -57,12 +57,16 @@ class Game
   def update_food_positions(id, value)
     if @food_positions[id] && @food_positions[id] == value
       # food has not been eaten
-    else
+    end
+
+    if @food_positions[id] && @food_positions[id] != value
       # food has been eaten
-      @food_positions[id] = value
       @local_food_position = random_position
+      @food_positions[id] = value
       @food = max_remote_food_position
     end
+
+    @food_positions[id] = value
   end
 
   def pack_snek(snek)

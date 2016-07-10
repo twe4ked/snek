@@ -21,9 +21,13 @@ class Game
 
   def start
     GameEngine::Sound.play 'startup.wav'
-    network.open_socket
-    GameEngine::Frame.setup
+
+    @network = GameEngine::Network.new
+    @network.open_socket
+
     reset_snek
+
+    GameEngine::Frame.setup
 
     GameEngine::Engine.tick do |tick|
       @tick = tick
@@ -38,9 +42,9 @@ class Game
   attr_reader :frame
 
   def update_network
-    network.receive_updates do |data|
+    @network.receive_updates do |data|
       hostname = data[:hostname]
-      unless hostname == network.hostname
+      unless hostname == @network.hostname
         @other_sneks[hostname] = {
           snek: unpack_snek(data[:snek]),
           head: data[:head],
@@ -49,7 +53,7 @@ class Game
 
       update_food_positions(data[:random_number], data[:food_position], data[:food_eaten_count])
     end
-    network.send_update(
+    @network.send_update(
       snek: pack_snek(@snek),
       random_number: @random_number,
       food_position: @local_food_position,
@@ -198,7 +202,7 @@ class Game
   end
 
   def draw_scores
-    draw_score (@head || '@'), network.hostname, @snek.length, rows
+    draw_score (@head || '@'), @network.hostname, @snek.length, rows
 
     @other_sneks.each_with_index do |data, i|
       hostname, snek = data
@@ -242,10 +246,6 @@ class Game
 
     @snek << new_position
     new_position
-  end
-
-  def network
-    @network ||= GameEngine::Network.new
   end
 
   def logger

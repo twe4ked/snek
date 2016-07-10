@@ -19,6 +19,7 @@ class Game
   end
 
   def start
+    Sound.play 'snek'
     network.open_socket
     Frame.setup
     reset_snake

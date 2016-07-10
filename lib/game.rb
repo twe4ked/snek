@@ -1,10 +1,10 @@
 require 'logger'
 require 'io/console'
-require 'frame'
+require 'game_engine/frame'
+require 'game_engine/input'
+require 'game_engine/network'
+require 'game_engine/sound'
 require 'snek'
-require 'network'
-require 'sound'
-require 'input'
 
 class Game
   def initialize

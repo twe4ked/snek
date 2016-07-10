@@ -40,9 +40,9 @@ class Game
 
   def update_network
     network.receive_updates do |data|
-      key = data[:hostname]
-      unless key == network.hostname
-        @other_sneks[key] = unpack_snek(data[:snek])
+      hostname = data[:hostname]
+      unless hostname == network.hostname
+        @other_sneks[hostname] = unpack_snek(data[:snek])
       end
       @food_positions[data[:random_number]] = data[:food_position]
       log @food_positions.to_s

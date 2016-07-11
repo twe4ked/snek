@@ -133,9 +133,8 @@ class Game
 
   def check_border_collision(border, new_position)
     if border.include?(new_position)
-      crash_sound
+      crash_snek
       add_message 'you crashed into a wall'
-      reset_snek
       return
     end
   end
@@ -226,17 +225,15 @@ class Game
     end
 
     if @snek.include?(new_position)
-      crash_sound
+      crash_snek
       add_message 'you crashed into yourself'
-      reset_snek
       return
     end
 
     @other_sneks.each do |hostname, snek|
       if snek[:snek].include?(new_position)
-        crash_sound
+        crash_snek
         add_message "you crashed into #{hostname}"
-        reset_snek
         return
       end
     end
@@ -269,7 +266,8 @@ class Game
     end
   end
 
-  def crash_sound
+  def crash_snek
     GameEngine::Sound.play 'explosion.wav'
+    reset_snek
   end
 end

@@ -116,13 +116,13 @@ module Snek
           case key
           when 'q'.ord, 27, 3 # escape, ctrl-c
             exit
-          when 119 # W up
+          when 'w'.ord
             @snek.direction = 'n' if @snek.direction != 's'
-          when 115 # S down
+          when 's'.ord
             @snek.direction = 's' if @snek.direction != 'n'
-          when 100 # D right
+          when 'd'.ord
             @snek.direction = 'e' if @snek.direction != 'w'
-          when 97  # A left
+          when 'a'.ord
             @snek.direction = 'w' if @snek.direction != 'e'
           end
         end

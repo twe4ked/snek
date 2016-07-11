@@ -114,7 +114,7 @@ module Snek
           head = @snek.last
 
           case key
-          when 'q'.ord, 27, 3 # escape, ctrl-c
+          when 'q'.ord, TerminalGameEngine::Input::Keys::ESCAPE, TerminalGameEngine::Input::Keys::CTRL_C
             exit
           when 'w'.ord
             @snek.direction = 'n' if @snek.direction != 's'

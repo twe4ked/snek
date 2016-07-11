@@ -145,6 +145,8 @@ class Game
       @snek.snek_length += 1
       @local_food_position = random_position
       @food_eaten_count += 1
+
+      update_food_positions(@random_number, @local_food_position, @food_eaten_count)
     end
   end
 

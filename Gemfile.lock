@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     snek (0.1.0)
+      terminal_game_engine
 
 GEM
   remote: https://rubygems.org/
@@ -28,6 +29,7 @@ GEM
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
     slop (3.6.0)
+    terminal_game_engine (0.1.0)
 
 PLATFORMS
   ruby

@@ -1,5 +1,6 @@
 require 'logger'
 require 'io/console'
+require 'terminal_game_engine'
 
 Dir[File.dirname(__FILE__) + "/**/*.rb"].each { |f| require f }
 
@@ -17,16 +18,16 @@ module Snek
     end
 
     def start
-      GameEngine::Sound.play 'startup.wav'
+      TerminalGameEngine::Sound.play 'startup.wav'
 
-      @network = GameEngine::Network.new logger: logger
+      @network = TerminalGameEngine::Network.new logger: logger
       @network.open_socket
 
       reset_snek
 
-      GameEngine::Frame.setup
+      TerminalGameEngine::Frame.setup
 
-      GameEngine::Engine.tick do |tick|
+      TerminalGameEngine::Engine.tick do |tick|
         @tick = tick
 
         render
@@ -82,17 +83,17 @@ module Snek
     end
 
     def rows
-      GameEngine::Window.rows
+      TerminalGameEngine::Window.rows
       25
     end
 
     def columns
-      GameEngine::Window.columns
+      TerminalGameEngine::Window.columns
       80
     end
 
     def render
-      @frame = GameEngine::Frame.new columns, rows + 10
+      @frame = TerminalGameEngine::Frame.new columns, rows + 10
 
       if @tick % 2 == 0 || %w[e w].include?(@snek.direction)
         new_position = move_snek
@@ -106,7 +107,7 @@ module Snek
         check_border_collision(border, new_position)
         check_food_collision(new_position)
 
-        GameEngine::Input.call do |key|
+        TerminalGameEngine::Input.call do |key|
           if key
             return if @tick == @input_in_tick
             @input_in_tick = @tick
@@ -142,7 +143,7 @@ module Snek
 
     def check_food_collision(new_position)
       if @food == new_position
-        GameEngine::Sound.play 'pickup.wav'
+        TerminalGameEngine::Sound.play 'pickup.wav'
         @snek.snek_length += 1
         @local_food_position = random_position
         @food_eaten_count += 1
@@ -270,7 +271,7 @@ module Snek
     end
 
     def crash_snek
-      GameEngine::Sound.play 'explosion.wav'
+      TerminalGameEngine::Sound.play 'explosion.wav'
       reset_snek
     end
   end

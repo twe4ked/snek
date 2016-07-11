@@ -1,28 +1,32 @@
-class Snek < Array
-  DIRECTIONS = %w[n s e w]
+require 'snek/version'
 
-  attr_accessor :snek_length, :direction
+module Snek
+  class Snek < Array
+    DIRECTIONS = %w[n s e w]
 
-  def initialize(*args)
-    @snek_length = 5
-    @direction = random_direction
-    super
-  end
+    attr_accessor :snek_length, :direction
 
-  def <<(*args)
-    shift if count >= snek_length
+    def initialize(*args)
+      @snek_length = 5
+      @direction = random_direction
+      super
+    end
 
-    super
-  end
+    def <<(*args)
+      shift if count >= snek_length
 
-  alias_method :orig_inspect, :inspect
-  def inspect
-    "#<Snek @snek_length=#{@snek_length.inspect} self=#{orig_inspect.inspect}>"
-  end
+      super
+    end
 
-  private
+    alias_method :orig_inspect, :inspect
+    def inspect
+      "#<Snek @snek_length=#{@snek_length.inspect} self=#{orig_inspect.inspect}>"
+    end
 
-  def random_direction
-    DIRECTIONS.sample
+    private
+
+    def random_direction
+      DIRECTIONS.sample
+    end
   end
 end

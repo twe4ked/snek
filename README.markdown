@@ -1,9 +1,17 @@
 # SNEK
 
+Terminal multiplayer snek game made at Railscamp 19, Adelaide.
+
+## Installation
+
 ```
-git@github.com:twe4ked/snek.git
-cd snek
-./run --head=⛵️
+gem install snek
+```
+
+## Usage
+
+```
+snek --head=⛵️
 ```
 
 Controls are <kbd>w</kbd>, <kbd>a</kbd>, <kbd>s</kbd>, <kbd>d</kbd>.

@@ -257,10 +257,6 @@ class Game
     @snek = Snek.new([random_position])
   end
 
-  def log(message)
-    logger.info message
-  end
-
   def add_message(message)
     @messages[message] = @tick + 10
   end

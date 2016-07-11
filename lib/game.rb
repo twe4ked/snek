@@ -83,12 +83,10 @@ module Snek
     end
 
     def rows
-      TerminalGameEngine::Window.rows
       25
     end
 
     def columns
-      TerminalGameEngine::Window.columns
       80
     end
 

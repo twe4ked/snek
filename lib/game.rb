@@ -18,7 +18,7 @@ module Snek
     end
 
     def start
-      TerminalGameEngine::Sound.play 'startup.wav'
+      play_sound 'startup'
 
       @network = TerminalGameEngine::Network.new logger: logger
       @network.open_socket
@@ -141,7 +141,7 @@ module Snek
 
     def check_food_collision(new_position)
       if @food == new_position
-        TerminalGameEngine::Sound.play 'pickup.wav'
+        play_sound 'pickup'
         @snek.snek_length += 1
         @local_food_position = random_position
         @food_eaten_count += 1
@@ -269,8 +269,13 @@ module Snek
     end
 
     def crash_snek
-      TerminalGameEngine::Sound.play 'explosion.wav'
+      play_sound 'explosion'
       reset_snek
+    end
+
+    def play_sound(name)
+      path = File.expand_path("../../assets/sounds/#{name}.wav", __FILE__)
+      TerminalGameEngine::Sound.play path
     end
   end
 end

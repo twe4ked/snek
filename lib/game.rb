@@ -114,15 +114,15 @@ module Snek
           head = @snek.last
 
           case key
-          when 'q'.ord, TerminalGameEngine::Input::Keys::ESCAPE, TerminalGameEngine::Input::Keys::CTRL_C
+          when 'q', TerminalGameEngine::Input::Keys::ESCAPE, TerminalGameEngine::Input::Keys::CTRL_C
             exit
-          when 'w'.ord
+          when 'w'
             @snek.direction = 'n' if @snek.direction != 's'
-          when 's'.ord
+          when 's'
             @snek.direction = 's' if @snek.direction != 'n'
-          when 'd'.ord
+          when 'd'
             @snek.direction = 'e' if @snek.direction != 'w'
-          when 'a'.ord
+          when 'a'
             @snek.direction = 'w' if @snek.direction != 'e'
           end
         end
